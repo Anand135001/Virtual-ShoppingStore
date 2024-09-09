@@ -1,3 +1,4 @@
+import {cart} from '../data/cart.js';
 
 let productsHtml = '';
 
@@ -46,7 +47,7 @@ products.forEach((products) => {
                     <img src="images/icons/checkmark.png">
                     Added
                 </div>
-
+                
                 <button class="add-to-cart-button button-primary js-add-to-cart" data-product-id="${products.id}">
                     Add to Cart
                 </button>
@@ -56,21 +57,22 @@ products.forEach((products) => {
 // ========= Insert Generated Html inside Grid div =========  
 document.querySelector('.js-products-grid').innerHTML = productsHtml;
 
+
 // ============ Add Cart Functioning ==========
-document.querySelectorAll('.js-add-to-cart').forEach((button) => {
+const addCart = document.querySelectorAll('.js-add-to-cart');
     
+    addCart.forEach((button) => {
     button.addEventListener('click', () => {
-      
-        // using data attributes of html here as (dataset)
+       // == using data attributes of html here as (dataset) ==
        const productId = button.dataset.productId;
     
        let matchingItem;
-      
        cart.forEach((item) => {
           if(productId === item.productId){
             matchingItem = item;  
             }
        });
+       
         if(matchingItem){
             matchingItem.quantity++;
         } else{
@@ -79,6 +81,12 @@ document.querySelectorAll('.js-add-to-cart').forEach((button) => {
             quantity: 1
             });
         } 
-       console.log(cart);
+       
+        let cartQuantity = 0;
+        cart.forEach((item) =>{
+            cartQuantity += item.quantity;
+        })
+        // ========= change cart quantity icon number ======== 
+        document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;        
     });
 });
