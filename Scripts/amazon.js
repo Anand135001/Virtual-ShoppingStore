@@ -1,7 +1,8 @@
-import {cart} from '../data/cart.js';
+import {cart, addToCart} from '../data/cart.js';
+import {products} from '../data/products.js';
 
 let productsHtml = '';
-
+// ========= 1 Generate Products Html ==============
 products.forEach((products) => {
     productsHtml += ` 
             <div class="product-container">
@@ -54,39 +55,28 @@ products.forEach((products) => {
                 </div>`;
 });
 
-// ========= Insert Generated Html inside Grid div =========  
+// ===== Insert Generated Html inside Grid div ====  
 document.querySelector('.js-products-grid').innerHTML = productsHtml;
 
 
-// ============ Add Cart Functioning ==========
-const addCart = document.querySelectorAll('.js-add-to-cart');
-    
-    addCart.forEach((button) => {
+// ===== change cart quantity icon number ===== 
+function updateCartQuantity(){
+    let cartQuantity = 0;
+    cart.forEach((cartItem) =>{
+        cartQuantity += cartItem.quantity;
+    });
+    document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
+}
+
+
+// ============ 2 Add Cart functionality ============
+document.querySelectorAll('.js-add-to-cart').forEach((button) => {
     button.addEventListener('click', () => {
-       // == using data attributes of html here as (dataset) ==
-       const productId = button.dataset.productId;
+       
+        // == using data attributes of html here as (dataset) ==
+        const productId = button.dataset.productId;
+        addToCart(productId);  //fun call
+        updateCartQuantity();  //fun call       
     
-       let matchingItem;
-       cart.forEach((item) => {
-          if(productId === item.productId){
-            matchingItem = item;  
-            }
-       });
-       
-        if(matchingItem){
-            matchingItem.quantity++;
-        } else{
-            cart.push({
-            productId: productId,
-            quantity: 1
-            });
-        } 
-       
-        let cartQuantity = 0;
-        cart.forEach((item) =>{
-            cartQuantity += item.quantity;
-        })
-        // ========= change cart quantity icon number ======== 
-        document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;        
     });
 });
