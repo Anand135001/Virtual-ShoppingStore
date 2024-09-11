@@ -2,14 +2,15 @@ import { cart, removeFromCart } from "../data/cart.js";
 import { products } from "../data/products.js";
 import {formatCurrency} from './utils/money.js';
 
-let cartSummaryHtml = "";
-
+let cartSummaryHtml = '';
+// =========== Generate cart Html ============
 cart.forEach((cartItem) => {
   const productId = cartItem.productId;
-
+  
+  // ==== Using data/products.js informations for Generating cart product html ====
   let matchedProduct;
   products.forEach((product) => {
-    if (product.id === productId) {
+    if(product.id === productId) {
       matchedProduct = product;
     }
   });
@@ -97,17 +98,18 @@ cart.forEach((cartItem) => {
       </div>
     </div> `;
 });
-
+// =========== Insert Generated Product Html ===========
 document.querySelector(".js-order-summary").innerHTML = cartSummaryHtml;
 
+// ========== Delete Button functionality ============
 document.querySelectorAll('.js-delete-link')
-  .forEach((link) =>{
-    link.addEventListener('click', () =>{
-      const productId = link.dataset.productId;
+  .forEach((deleteButton) =>{
+    deleteButton.addEventListener('click', () =>{
+      const productId = deleteButton.dataset.productId;
+      
       removeFromCart(productId); //fun call/cart.js 
 
       const container = document.querySelector(`.js-cart-item-container-${productId}`);
-      
       container.remove(); 
     });
   });
