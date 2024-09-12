@@ -18,6 +18,7 @@ function saveToStorage(){
   localStorage.setItem('cart', JSON.stringify(cart));
 }
 
+
 // ======= Add cart function /amazon.js=======
 export function addToCart(productId) {
   let matchingItem;
@@ -38,6 +39,17 @@ export function addToCart(productId) {
   }
   saveToStorage(); //fun call
 }
+
+
+// ===== Update cart quantity icon number =====
+export function calculateCartQuantity() {
+  let cartQuantity = 0;
+  cart.forEach((cartItem) => {
+    cartQuantity += cartItem.quantity;
+  });
+  return cartQuantity;
+}
+
 
 // ====== Delete cart function/checkout.js ========
 export function removeFromCart(productId) {

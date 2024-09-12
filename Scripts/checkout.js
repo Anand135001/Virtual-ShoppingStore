@@ -1,20 +1,18 @@
-import { cart, removeFromCart } from "../data/cart.js";
+import { cart, removeFromCart, calculateCartQuantity } from "../data/cart.js";
 import { products } from "../data/products.js";
-import {formatCurrency} from './utils/money.js';
+import { formatCurrency } from './utils/money.js';
 
 let cartSummaryHtml = '';
 // =========== Generate cart Html ============
 cart.forEach((cartItem) => {
   const productId = cartItem.productId;
   
-  // ==== Using data/products.js informations for Generating cart product html ====
   let matchedProduct;
   products.forEach((product) => {
     if(product.id === productId) {
       matchedProduct = product;
     }
   });
-
   cartSummaryHtml += `
     <div class="cart-item-container 
     js-cart-item-container-${matchedProduct.id}">
@@ -101,6 +99,16 @@ cart.forEach((cartItem) => {
 // =========== Insert Generated Product Html ===========
 document.querySelector(".js-order-summary").innerHTML = cartSummaryHtml;
 
+
+// ========= Update header CheckOut number ====== 
+function updateCartQuantity(){
+  const cartQuantity = calculateCartQuantity();
+
+  document.querySelector('.js-return-to-home-link').innerHTML = `${cartQuantity} items`;
+}
+updateCartQuantity();
+
+
 // ========== Delete Button functionality ============
 document.querySelectorAll('.js-delete-link')
   .forEach((deleteButton) =>{
@@ -111,5 +119,7 @@ document.querySelectorAll('.js-delete-link')
 
       const container = document.querySelector(`.js-cart-item-container-${productId}`);
       container.remove(); 
+      updateCartQuantity();
     });
   });
+

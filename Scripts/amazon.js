@@ -1,4 +1,4 @@
-import { cart, addToCart } from "../data/cart.js";
+import { cart, addToCart, calculateCartQuantity} from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 
@@ -8,8 +8,8 @@ products.forEach((product) => {
   productHtml += ` 
             <div class="product-container">
                 <div class="product-image-container">
-                    <img class="product-image"
-                    src="${product.image}">
+                  <img class="product-image"
+                  src="${product.image}">
                 </div>
 
                 <div class="product-name limit-text-to-2-lines">
@@ -31,7 +31,7 @@ products.forEach((product) => {
                 </div>
 
                 <div class="product-quantity-container">
-                    <select>
+                  <select>
                     <option selected value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -42,20 +42,19 @@ products.forEach((product) => {
                     <option value="8">8</option>
                     <option value="9">9</option>
                     <option value="10">10</option>
-                    </select>
+                  </select>
                 </div>
 
                 <div class="product-spacer"></div>
 
                 <div class="added-to-cart">
-                    <img src="images/icons/checkmark.png">
-                    Added
+                  <img src="images/icons/checkmark.png">
+                  Added
                 </div>
                 
-                <button class="add-to-cart-button button-primary js-add-to-cart" data-product-id="${
-                  product.id
-                }">
-                    Add to Cart
+                <button class="add-to-cart-button button-primary 
+                js-add-to-cart" data-product-id="${product.id}">
+                  Add to Cart
                 </button>
                 </div>`;
 });
@@ -63,14 +62,13 @@ products.forEach((product) => {
 // ===== Insert Generated Html inside Grid div ====
 document.querySelector(".js-products-grid").innerHTML = productHtml;
 
-// ===== change cart quantity icon number =====
-function updateCartQuantity() {
-  let cartQuantity = 0;
-  cart.forEach((cartItem) => {
-    cartQuantity += cartItem.quantity;
-  });
+
+function updateCartQuantity(){
+  const cartQuantity = calculateCartQuantity();
+
   document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
 }
+updateCartQuantity();
 
 // ============ 2 Add Cart functionality ============
 document.querySelectorAll(".js-add-to-cart").forEach((Addbutton) => {
@@ -79,5 +77,6 @@ document.querySelectorAll(".js-add-to-cart").forEach((Addbutton) => {
     const productId = Addbutton.dataset.productId;
     addToCart(productId); //fun call /cart.js
     updateCartQuantity(); //fun call
+
   });
 });
