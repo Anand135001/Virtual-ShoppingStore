@@ -8,6 +8,7 @@ import { products,getProduct } from "../../data/products.js";
 import { formatCurrency } from "../utils/money.js";
 import { deliveryOptions, getDeliveryOption} from "../../data/deliveryOptions.js";
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
+import { renderPaymentSummary } from "./paymentSummary.js";
 
 // =========== Render cart Html ============
 export function renderOrderSummary() {
@@ -117,24 +118,24 @@ export function renderOrderSummary() {
 
   function updateCartQuantity() {
     const cartQuantity = calculateCartQuantity();
-
-    document.querySelector(
-      ".js-return-to-home-link"
-    ).innerHTML = `${cartQuantity} items`;
+    document.querySelector(".js-return-to-home-link")
+    .innerHTML = `${cartQuantity} items`;
   }
   updateCartQuantity();
 
   // ========== Delete Button functionality ============
-  document.querySelectorAll(".js-delete-link").forEach((deleteButton) => {
-    deleteButton.addEventListener("click", () => {
-      const productId = deleteButton.dataset.productId;
-      removeFromCart(productId); //fun call/cart.js
+  document.querySelectorAll(".js-delete-link")
+    .forEach((deleteButton) => {
+      deleteButton.addEventListener("click", () => {
+        const productId = deleteButton.dataset.productId;
+        removeFromCart(productId); //fun call/cart.js
 
-      const container = document.querySelector(
+        const container = document.querySelector(
         `.js-cart-item-container-${productId}`
-      );
-      container.remove();
-      updateCartQuantity();
+        );
+        container.remove();
+        updateCartQuantity();
+        renderPaymentSummary();
     });
   });
 
@@ -143,10 +144,9 @@ export function renderOrderSummary() {
     element.addEventListener("click", () => {
       // Use of html data attributes/shorthand property
       const { productId, deliveryOptionId } = element.dataset;
-      console.log(productId);
-      console.log(deliveryOptionId);
       updateDeliveryOption(productId, deliveryOptionId);
       renderOrderSummary();
+      renderPaymentSummary();
     });
   });
 }
