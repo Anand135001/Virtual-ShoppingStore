@@ -54,7 +54,7 @@ export function calculateCartQuantity() {
 }
 
 
-// ====== Delete cart function/checkout.js ========
+// ====== Delete cart function ========
 export function removeFromCart(productId) {
    const newCart = [];
    
@@ -66,6 +66,20 @@ export function removeFromCart(productId) {
    cart = newCart;
   
    saveToStorage(); //fun call
+}
+
+export function updateQuantity(productId, newQuantity) {
+  let matchingItem;
+
+  cart.forEach((cartItem) => {
+    if (productId === cartItem.productId) {
+      matchingItem = cartItem;
+    }
+  });
+
+  matchingItem.quantity = newQuantity;
+
+  saveToStorage();
 }
 
 // Update delivery option on the top of the product/checkout.js 
