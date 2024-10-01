@@ -1,4 +1,4 @@
-import { formatCurrency } from "../Scripts/utils/money.js";
+import { formatCurrency } from "../../Scripts/utils/money.js";
 
 // function given by jasmine TF 
 describe('test suite: formatCurrnecy',() =>{
