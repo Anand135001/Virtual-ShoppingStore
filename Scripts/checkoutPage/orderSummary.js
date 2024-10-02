@@ -1,5 +1,4 @@
-import {
-  cart,
+import {cart,
   removeFromCart,
   calculateCartQuantity,
   updateDeliveryOption,
@@ -29,7 +28,7 @@ export function renderOrderSummary() {
     const dateString = deliverydate.format("dddd, MMMM, D");
 
     cartSummaryHtml += `
-        <div class="cart-item-container 
+        <div class="cart-item-container js-cart-item-container
         js-cart-item-container-${matchedProduct.id}">
             <div class="delivery-date">
               Delivery date: ${dateString}
@@ -46,7 +45,7 @@ export function renderOrderSummary() {
                 <div class="product-price">
                     $${formatCurrency(matchedProduct.priceCents)}
                 </div>
-                <div class="product-quantity">
+                <div class="product-quantity js-product-quantity-${matchedProduct.id}">
                     <span>
                         Quantity: <span class="quantity-label js-quantity-label-${matchedProduct.id}">${cartItem.quantity} </span>
                     </span>
@@ -61,7 +60,8 @@ export function renderOrderSummary() {
                       data-product-id="${matchedProduct.id}">
                       Save
                     </span>
-                    <span class="delete-quantity-link link-primary js-delete-link" 
+                    <span class="delete-quantity-link link-primary 
+                    js-delete-link js-delete-link-${matchedProduct.id}" 
                       data-product-id = "${matchedProduct.id}">
                       Delete
                     </span>
@@ -122,10 +122,13 @@ export function renderOrderSummary() {
   // =========== Insert Generated Product Html ===========
   document.querySelector(".js-order-summary").innerHTML = cartSummaryHtml;
 
+
   function updateCartQuantity() {
     const cartQuantity = calculateCartQuantity();
-    document.querySelector(".js-return-to-home-link")
-    .innerHTML = `${cartQuantity} items`;
+    const returnHomeLink = document.querySelector(".js-return-to-home-link");
+     if(returnHomeLink){ 
+      returnHomeLink.innerHTML = `${cartQuantity} items`;
+     }
   }
   updateCartQuantity();
 
@@ -189,6 +192,7 @@ export function renderOrderSummary() {
         );
         container.remove();
         updateCartQuantity();
+  
         renderPaymentSummary();
     });
   });
