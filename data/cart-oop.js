@@ -62,9 +62,6 @@ function Cart(localStorageKey){
         this.saveToStorage();
     }
 
-
-
-
    
    };
 
