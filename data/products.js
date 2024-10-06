@@ -32,8 +32,23 @@ class Product {
   getPrice(){
      return `$${formatCurrency(this.priceCents)}`;
   }
+   
+  extraInfoHTML(){
+      return ``;
+    }
+}
 
-  
+class Clothing extends Product{
+    sizeChartLink;
+
+    constructor(prodcutDetails){
+      super(prodcutDetails);  //call product constructor
+      this.sizeChartLink = prodcutDetails.sizeChartLink;
+    }
+
+    extraInfoHTML(){
+      return `<a href="${this.sizeChartLink}" traget="_blank">Size Chart </a>`;
+    }
 }
 
 
@@ -115,6 +130,7 @@ export const products = [
       count: 317,
     },
     priceCents: 2400,
+    type: "clothing",
     keywords: ["hoodies", "sweaters", "apparel"],
   },
   {
@@ -506,9 +522,13 @@ export const products = [
       count: 3157,
     },
     priceCents: 2400,
+    type: "clothing",
     keywords: ["sweaters", "hoodies", "apparel", "mens"],
   },
-].map((prodcutDetails) =>{
-    return new Product(prodcutDetails);
+].map((prodcutDetails) => {
+  if (prodcutDetails.type === "clothing") {
+    return new Clothing(prodcutDetails);
+  }
+  return new Product(prodcutDetails);
 });
 
