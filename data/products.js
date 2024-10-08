@@ -83,7 +83,7 @@ export function loadProducts(fun){
     }
       return new Product(prodcutDetails);
     });
-    console.log('load products');
+    console.log('load product');
     fun();
   });
 
